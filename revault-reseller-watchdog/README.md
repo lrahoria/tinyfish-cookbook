@@ -1,22 +1,22 @@
-# ResaleRadar — The Autonomous Watchdog for Resellers
+# ResaleRadar - The Autonomous Watchdog for Resellers
 
 A 24/7 price watchdog powered by [TinyFish](https://tinyfish.ai) browser agents. Add items you want to flip, set your target margin and max buy price, and ResaleRadar monitors reseller platforms every 5 minutes — alerting you on Discord the moment a deal hits your target.
 
-Built for the [TinyFish Take-Home Challenge](https://github.com/tinyfish-io/tinyfish-cookbook): *"The Autonomous Watchdog"*
+Built for the [TinyFish Take-Home Challenge] *"The Autonomous Watchdog"*
 
 ## How It Works
 
 1. **Add an item** to your Watchdog List (e.g., "Louis Vuitton Neverfull MM")
 2. **Set your target** — max buy price + target margin %
-3. **TinyFish agents** scrape reseller platforms (Fashionphile, TCGPlayer, StockX, etc.) every 5 minutes
-4. **Discord alert** fires instantly when a listing meets your criteria
+3. **TinyFish agents** scrape reseller platforms every 15 minutes
+4. **Discord alert** fires instantly when a listing meets your criteria and then after every 15 minutes.
 
 ## Categories Supported
 
 | Category | Platforms Scraped |
 |----------|-------------------|
 | Watches | Chrono24, WatchBox, Bob's Watches, eBay |
-| Bags | Fashionphile, TheRealReal, Vestiaire, Rebag |
+| Bags | Fashionphile, TheRealReal, Vestiaire, Rebag, GoogleShopping |
 | Trading Cards | TCGPlayer, eBay, StockX, PWCC |
 | Sports & Fan Gear | Fanatics, eBay Sports, PWCC, Goldin, StockX, SidelineSwap |
 | Sneakers | StockX, GOAT, eBay, Alias |
@@ -53,12 +53,8 @@ Or edit `src/config.js` directly with your keys.
 npm run dev
 ```
 
-### 5. Deploy to Vercel
+### 5. Deploy 
 
-```bash
-npm install -g vercel
-vercel --prod
-```
 
 Set the environment variables in Vercel Dashboard → Project Settings → Environment Variables.
 
@@ -81,7 +77,3 @@ User adds item → TinyFish browser agents scrape reseller sites
 - **Scraping**: TinyFish Web Agent API (handles anti-bot, JS-heavy sites)
 - **Notifications**: Discord Webhooks
 - **Hosting**: Vercel
-
-## Built By
-
-Laksh Rahoria — [TinyFish CMU Event Submission](mailto:gargi@tinyfish.io)

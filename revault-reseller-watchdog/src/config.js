@@ -12,8 +12,8 @@ export const CONFIG = {
   // Discord webhook URL
   DISCORD_WEBHOOK_URL: import.meta.env.VITE_DISCORD_WEBHOOK_URL || "",
 
-  // How often TinyFish agents scan (in minutes)
-  SCAN_INTERVAL_MINUTES: 15,
+  // How often TinyFish agents scan (in minutes) — override via VITE_SCAN_INTERVAL_MINUTES in Vercel
+  SCAN_INTERVAL_MINUTES: parseInt(import.meta.env.VITE_SCAN_INTERVAL_MINUTES) || 15,
 };
 
 // Send a Discord alert when a watchlist target is hit

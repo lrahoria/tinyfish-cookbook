@@ -1,4 +1,4 @@
-# ResaleRadar - The Autonomous Watchdog for Resellers
+# Revault - The Autonomous Watchdog for Resellers
 
 A 24/7 price watchdog powered by [TinyFish](https://tinyfish.ai) browser agents. Add items you want to flip, set your target margin and max buy price, and ResaleRadar monitors reseller platforms every 5 minutes — alerting you on Discord the moment a deal hits your target.
 
@@ -16,7 +16,7 @@ Built for the [TinyFish Take-Home Challenge] *"The Autonomous Watchdog"*
 | Category | Platforms Scraped |
 |----------|-------------------|
 | Watches | Chrono24, WatchBox, Bob's Watches, eBay |
-| Bags | Fashionphile, TheRealReal, Vestiaire, Rebag, GoogleShopping |
+| Bags | Fashionphile, Vestiaire, Rebag, GoogleShopping |
 | Trading Cards | TCGPlayer, eBay, StockX, PWCC |
 | Sports & Fan Gear | Fanatics, eBay Sports, PWCC, Goldin, StockX, SidelineSwap |
 | Sneakers | StockX, GOAT, eBay, Alias |

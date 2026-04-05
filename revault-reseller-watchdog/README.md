@@ -27,7 +27,7 @@ Built for the [TinyFish Take-Home Challenge] *"The Autonomous Watchdog"*
 
 ```bash
 git clone <your-repo-url>
-cd tinyfish-app
+cd revault-reseller-watchdog
 npm install
 ```
 

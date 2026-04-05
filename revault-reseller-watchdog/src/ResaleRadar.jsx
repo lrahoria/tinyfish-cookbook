@@ -85,6 +85,13 @@ const generateRuntimePrompt = (categoryId, sourceName, itemName, maxBuyPrice, ta
   };
 };
 
+function formatInterval(minutes) {
+  if (minutes >= 10080) return `${minutes / 10080} week${minutes / 10080 > 1 ? "s" : ""}`;
+  if (minutes >= 1440) return `${minutes / 1440} day${minutes / 1440 > 1 ? "s" : ""}`;
+  if (minutes >= 60) return `${minutes / 60} hr${minutes / 60 > 1 ? "s" : ""}`;
+  return `${minutes} min`;
+}
+
 export default function Revault() {
   const [view, setView] = useState("home");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -98,6 +105,10 @@ export default function Revault() {
   const [agentResults, setAgentResults] = useState({});
   const [newItem, setNewItem] = useState({
     name: "", category: "watches", targetMargin: 20, targetBuy: "",
+  });
+  const [scanIntervalMinutes, setScanIntervalMinutes] = useState(() => {
+    const saved = localStorage.getItem("revault_scan_interval");
+    return saved ? parseInt(saved) : CONFIG.SCAN_INTERVAL_MINUTES;
   });
 
   const scanIntervalRef = useRef(null);
@@ -143,13 +154,12 @@ export default function Revault() {
       });
     };
 
-    // Run every SCAN_INTERVAL_MINUTES
-    scanIntervalRef.current = setInterval(scanAll, CONFIG.SCAN_INTERVAL_MINUTES * 60 * 1000);
+    scanIntervalRef.current = setInterval(scanAll, scanIntervalMinutes * 60 * 1000);
 
     return () => {
       if (scanIntervalRef.current) clearInterval(scanIntervalRef.current);
     };
-  }, [watchlist.length, runScan]);
+  }, [watchlist.length, runScan, scanIntervalMinutes]);
 
   const handleAddItem = () => {
     if (!newItem.name || !newItem.targetBuy) return;
@@ -402,7 +412,7 @@ export default function Revault() {
                   </div>
                   <div style={{ fontSize: 12, color: "#888", marginTop: 4, lineHeight: 1.5 }}>
                     When you add a {cat.name.toLowerCase().replace(/s$/, "")} to your Watchlist, {sources.length} TinyFish browser agents
-                    fan out across reseller platforms every {CONFIG.SCAN_INTERVAL_MINUTES} minutes. Each agent searches for your specific item, filtered
+                    fan out across reseller platforms every {formatInterval(scanIntervalMinutes)}. Each agent searches for your specific item, filtered
                     to your max buy price, and flags listings that hit your target margin.
                   </div>
                   <div style={{
@@ -478,7 +488,7 @@ export default function Revault() {
                                   background: "#f3f2ef", color: "#999", fontWeight: 700,
                                   letterSpacing: 0.5,
                                 }}>
-                                  EVERY {CONFIG.SCAN_INTERVAL_MINUTES} MIN
+                                  EVERY {formatInterval(scanIntervalMinutes).toUpperCase()}
                                 </div>
                               </div>
                               <div style={{
@@ -662,10 +672,44 @@ export default function Revault() {
             }}>
               Your Watchdog List
             </h2>
-            <p style={{ fontSize: 12, color: "#999", margin: 0 }}>
-              Tracking {watchlist.length} item{watchlist.length !== 1 ? "s" : ""} across {new Set(watchlist.flatMap(w => w.sources.map(s => s.name))).size} platforms.
-              {" "}Scanning every {CONFIG.SCAN_INTERVAL_MINUTES} min. Discord alerts active.
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+              <p style={{ fontSize: 12, color: "#999", margin: 0 }}>
+                Tracking {watchlist.length} item{watchlist.length !== 1 ? "s" : ""} across {new Set(watchlist.flatMap(w => w.sources.map(s => s.name))).size} platforms.
+                {" "}Discord alerts active.
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 11, color: "#999" }}>Scan every</span>
+                <select
+                  value={scanIntervalMinutes}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    setScanIntervalMinutes(val);
+                    localStorage.setItem("revault_scan_interval", val);
+                  }}
+                  style={{
+                    fontSize: 11, color: "#1a1a1a", background: "#fff",
+                    border: "1px solid #ddd", borderRadius: 6, padding: "2px 6px",
+                    cursor: "pointer", fontFamily: "inherit",
+                  }}
+                >
+                  {[
+                    { value: 5, label: "5 min" },
+                    { value: 10, label: "10 min" },
+                    { value: 15, label: "15 min" },
+                    { value: 30, label: "30 min" },
+                    { value: 60, label: "1 hour" },
+                    { value: 360, label: "6 hours" },
+                    { value: 720, label: "12 hours" },
+                    { value: 1440, label: "1 day" },
+                    { value: 2880, label: "2 days" },
+                    { value: 4320, label: "3 days" },
+                    { value: 10080, label: "7 days" },
+                  ].map(({ value, label }) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
 
 
